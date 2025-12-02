@@ -1,47 +1,56 @@
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using StardewValley.TerrainFeatures;
 
 namespace StardewValley.Menus
 {
-	// Token: 0x02000353 RID: 851
+	// Token: 0x02000351 RID: 849
 	public class CheatMenu : IClickableMenu
 	{
-		// Token: 0x06002983 RID: 10627
+		// Token: 0x0600268B RID: 9867 RVA: 0x00241F3C File Offset: 0x0024013C
 		public CheatMenu() : base(Game1.viewport.Width / 2 - (1000 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, 1000 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2, false)
 		{
 			int num = this.xPositionOnScreen + 50;
-			int y = this.yPositionOnScreen + 130;
-			int num2 = 333;
+			int num2 = this.yPositionOnScreen + 130;
+			int num3 = 333;
 			this.moneyTextBox = new TextBox(Game1.content.Load<Texture2D>("LooseSprites\\textBox"), null, Game1.smallFont, Game1.textColor)
 			{
 				X = num,
-				Y = y,
+				Y = num2,
 				Width = 200,
 				Height = 60,
 				Text = "1000"
 			};
-			this.addMoneyButton = new ClickableTextureComponent(new Rectangle(num + 210, y, 64, 64), Game1.mouseCursors, new Rectangle(128, 256, 64, 64), 0.8f, false);
-			this.energyButton = new ClickableTextureComponent(new Rectangle(num + num2, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+			this.addMoneyButton = new ClickableTextureComponent(new Rectangle(num + 210, num2, 64, 64), Game1.mouseCursors, new Rectangle(128, 256, 64, 64), 0.8f, false);
+			this.energyButton = new ClickableTextureComponent(new Rectangle(num + num3, num2, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
 			this.closeButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width + 10, this.yPositionOnScreen - 80, 40, 40), Game1.mouseCursors, new Rectangle(337, 494, 12, 12), 4f, false);
-			this.immortalButton = new ClickableTextureComponent(new Rectangle(num + num2 * 2, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
-			this.timeButton = new ClickableTextureComponent(new Rectangle(num, y + 100, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
-			int speedY = y + 200;
-			this.speedUpButton = new ClickableTextureComponent(new Rectangle(num, speedY, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
-			this.speedDownButton = new ClickableTextureComponent(new Rectangle(num + 170, speedY, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
-			this.speedResetButton = new ClickableTextureComponent(new Rectangle(num + 340, speedY, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
-			CheatMenu.InitializeOriginalSpeed();
+			this.immortalButton = new ClickableTextureComponent(new Rectangle(num + num3 + 165 + 50, num2, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+			this.oneHitKillButton = new ClickableTextureComponent(new Rectangle(num + num3 * 2 + 80, num2, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+			this.inventorySizeTextBox = new TextBox(Game1.content.Load<Texture2D>("LooseSprites\\textBox"), null, Game1.smallFont, Game1.textColor)
+			{
+				X = num + num3 + 165 + 50,
+				Y = num2 + 80,
+				Width = 200,
+				Height = 60,
+				Text = "36"
+			};
+			this.inventorySizeButton = new ClickableTextureComponent(new Rectangle(num + num3 + 165 + 50 + 210, num2 + 80, 64, 64), Game1.mouseCursors, new Rectangle(128, 256, 64, 64), 0.8f, false);
+			int num4 = num2 + 80 + 100;
+			this.autoWaterButton = new ClickableTextureComponent(new Rectangle(num + num3 + 165 + 50, num4, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+			int y = num4 + 80;
+			this.growAllButton = new ClickableTextureComponent(new Rectangle(num + num3 + 165 + 50, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
 		}
 
-		// Token: 0x06002984 RID: 10628
+		// Token: 0x0600268C RID: 9868 RVA: 0x00018CE2 File Offset: 0x00016EE2
 		private Rectangle GetTextBoxBounds()
 		{
 			return new Rectangle(this.moneyTextBox.X, this.moneyTextBox.Y, this.moneyTextBox.Width, this.moneyTextBox.Height);
 		}
 
-		// Token: 0x06002985 RID: 10629
+		// Token: 0x0600268D RID: 9869 RVA: 0x00242274 File Offset: 0x00240474
 		public override void draw(SpriteBatch b)
 		{
 			b.Draw(Game1.staminaRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * 0.5f);
@@ -56,9 +65,9 @@ namespace StardewValley.Menus
 			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.energyButton.bounds.X, this.energyButton.bounds.Y, this.energyButton.bounds.Width, this.energyButton.bounds.Height, this.energyButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
 			Vector2 vector2 = Game1.dialogueFont.MeasureString("Refill");
 			Utility.drawTextWithShadow(b, "Refill", Game1.smallFont, new Vector2((float)(this.energyButton.bounds.X + this.energyButton.bounds.Width / 2) - vector2.X / 2f, (float)this.energyButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			Utility.drawTextWithShadow(b, "Immortality:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 50 + 666), (float)(this.yPositionOnScreen + 90)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			Utility.drawTextWithShadow(b, "Immortality:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 50 + 333 + 165 + 50), (float)(this.yPositionOnScreen + 90)), Color.White, 1f, -1f, -1, -1, 1f, 3);
 			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.immortalButton.bounds.X, this.immortalButton.bounds.Y, this.immortalButton.bounds.Width, this.immortalButton.bounds.Height, this.immortalButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
-			if (this.isImmortal)
+			if (CheatMenu.IsImmortal)
 			{
 				Vector2 vector3 = Game1.dialogueFont.MeasureString("On");
 				Utility.drawTextWithShadow(b, "On", Game1.smallFont, new Vector2((float)(this.immortalButton.bounds.X + this.immortalButton.bounds.Width / 2) - vector3.X / 2f, (float)this.immortalButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
@@ -68,34 +77,43 @@ namespace StardewValley.Menus
 				Vector2 vector4 = Game1.dialogueFont.MeasureString("Off");
 				Utility.drawTextWithShadow(b, "Off", Game1.smallFont, new Vector2((float)(this.immortalButton.bounds.X + this.immortalButton.bounds.Width / 2) - vector4.X / 2f, (float)this.immortalButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
 			}
-			Utility.drawTextWithShadow(b, "Stop time:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 50), (float)(this.yPositionOnScreen + 90 + 100)), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.timeButton.bounds.X, this.timeButton.bounds.Y, this.timeButton.bounds.Width, this.timeButton.bounds.Height, this.timeButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
-			string timeLabel = CheatMenu.TimeFrozen ? "On" : "Off";
-			Vector2 timeSize = Game1.dialogueFont.MeasureString(timeLabel);
-			Utility.drawTextWithShadow(b, timeLabel, Game1.smallFont, new Vector2((float)(this.timeButton.bounds.X + this.timeButton.bounds.Width / 2) - timeSize.X / 2f, (float)this.timeButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			Utility.drawTextWithShadow(b, "Speed:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 150), (float)(this.yPositionOnScreen + 90 + 200 + 10)), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.speedUpButton.bounds.X, this.speedUpButton.bounds.Y, this.speedUpButton.bounds.Width, this.speedUpButton.bounds.Height, this.speedUpButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
-			Utility.drawTextWithShadow(b, "Faster", Game1.smallFont, new Vector2((float)(this.speedUpButton.bounds.X + 10), (float)(this.speedUpButton.bounds.Y + 8)), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.speedDownButton.bounds.X, this.speedDownButton.bounds.Y, this.speedDownButton.bounds.Width, this.speedDownButton.bounds.Height, this.speedDownButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
-			Utility.drawTextWithShadow(b, "Slower", Game1.smallFont, new Vector2((float)(this.speedDownButton.bounds.X + 10), (float)(this.speedDownButton.bounds.Y + 8)), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.speedResetButton.bounds.X, this.speedResetButton.bounds.Y, this.speedResetButton.bounds.Width, this.speedResetButton.bounds.Height, this.speedResetButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
-			Utility.drawTextWithShadow(b, "Normal", Game1.smallFont, new Vector2((float)(this.speedResetButton.bounds.X + 10), (float)(this.speedResetButton.bounds.Y + 8)), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			string speedText = string.Format("Current: x{0:F1}", CheatMenu.SpeedMultiplier);
-			Utility.drawTextWithShadow(b, speedText, Game1.smallFont, new Vector2((float)this.speedUpButton.bounds.X, (float)(this.speedUpButton.bounds.Y + this.speedUpButton.bounds.Height + 10)), Color.LightGreen, 1f, -1f, -1, -1, 1f, 3);
+			Utility.drawTextWithShadow(b, "One Hit Kill:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 50 + 666 + 80), (float)(this.yPositionOnScreen + 90)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.oneHitKillButton.bounds.X, this.oneHitKillButton.bounds.Y, this.oneHitKillButton.bounds.Width, this.oneHitKillButton.bounds.Height, this.oneHitKillButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
+			if (CheatMenu.IsOneHitKill)
+			{
+				Vector2 vector5 = Game1.dialogueFont.MeasureString("On");
+				Utility.drawTextWithShadow(b, "On", Game1.smallFont, new Vector2((float)(this.oneHitKillButton.bounds.X + this.oneHitKillButton.bounds.Width / 2) - vector5.X / 2f, (float)this.oneHitKillButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			}
+			else
+			{
+				Vector2 vector6 = Game1.dialogueFont.MeasureString("Off");
+				Utility.drawTextWithShadow(b, "Off", Game1.smallFont, new Vector2((float)(this.oneHitKillButton.bounds.X + this.oneHitKillButton.bounds.Width / 2) - vector6.X / 2f, (float)this.oneHitKillButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			}
+			Utility.drawTextWithShadow(b, "Inventory size:", Game1.smallFont, new Vector2((float)this.inventorySizeTextBox.X, (float)(this.inventorySizeTextBox.Y - 40)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			this.inventorySizeTextBox.Draw(b, true);
+			this.inventorySizeButton.draw(b);
+			Utility.drawTextWithShadow(b, "Auto water crops:", Game1.smallFont, new Vector2((float)this.autoWaterButton.bounds.X, (float)(this.autoWaterButton.bounds.Y - 40)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.autoWaterButton.bounds.X, this.autoWaterButton.bounds.Y, this.autoWaterButton.bounds.Width, this.autoWaterButton.bounds.Height, this.autoWaterButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
+			Utility.drawTextWithShadow(b, "Water All", Game1.smallFont, new Vector2((float)(this.autoWaterButton.bounds.X + 10), (float)this.autoWaterButton.bounds.Y + 10f), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			Utility.drawTextWithShadow(b, "Grow all crops:", Game1.smallFont, new Vector2((float)this.growAllButton.bounds.X, (float)(this.growAllButton.bounds.Y - 40)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.growAllButton.bounds.X, this.growAllButton.bounds.Y, this.growAllButton.bounds.Width, this.growAllButton.bounds.Height, this.growAllButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
+			Utility.drawTextWithShadow(b, "Grow All", Game1.smallFont, new Vector2((float)(this.growAllButton.bounds.X + 10), (float)this.growAllButton.bounds.Y + 10f), Color.White, 1f, -1f, -1, -1, 1f, 3);
 			this.closeButton.draw(b);
 			base.draw(b);
 			base.drawMouse(b);
 		}
 
-		// Token: 0x06002986 RID: 10630
+		// Token: 0x0600268E RID: 9870 RVA: 0x00242B98 File Offset: 0x00240D98
 		public override void performHoverAction(int x, int y)
 		{
 			base.performHoverAction(x, y);
 			this.addMoneyButton.tryHover(x, y, 0.1f);
 			this.closeButton.tryHover(x, y, 0.1f);
+			this.autoWaterButton.tryHover(x, y, 0.1f);
+			this.growAllButton.tryHover(x, y, 0.1f);
 		}
 
-		// Token: 0x06002987 RID: 10631
+		// Token: 0x0600268F RID: 9871 RVA: 0x00242BF8 File Offset: 0x00240DF8
 		public override void receiveLeftClick(int x, int y, bool playSound = true)
 		{
 			base.receiveLeftClick(x, y, playSound);
@@ -128,56 +146,68 @@ namespace StardewValley.Menus
 			}
 			if (this.immortalButton.containsPoint(x, y))
 			{
-				if (this.isImmortal)
+				if (CheatMenu.IsImmortal)
 				{
 					Game1.addHUDMessage(new HUDMessage("Immortality: off", 2));
-					this.isImmortal = false;
+					CheatMenu.IsImmortal = false;
 					return;
 				}
 				Game1.addHUDMessage(new HUDMessage("Immortality: on", 2));
-				this.isImmortal = true;
+				CheatMenu.IsImmortal = true;
 			}
-			if (this.timeButton.containsPoint(x, y))
+			if (this.oneHitKillButton.containsPoint(x, y))
 			{
-				if (CheatMenu.TimeFrozen)
+				if (CheatMenu.IsOneHitKill)
 				{
-					CheatMenu.TimeFrozen = false;
-					Game1.addHUDMessage(new HUDMessage("Time: normal", 2));
+					Game1.addHUDMessage(new HUDMessage("One Hit Kill: off", 2));
+					CheatMenu.IsOneHitKill = false;
 					return;
 				}
-				CheatMenu.TimeFrozen = true;
-				CheatMenu.FrozenTimeOfDay = Game1.timeOfDay;
-				Game1.addHUDMessage(new HUDMessage("Time: stopped", 2));
+				Game1.addHUDMessage(new HUDMessage("One Hit Kill: on", 2));
+				CheatMenu.IsOneHitKill = true;
 			}
-			if (this.speedUpButton.containsPoint(x, y))
+			if (this.inventorySizeButton.containsPoint(x, y))
 			{
-				CheatMenu.SpeedMultiplier += 0.5f;
-				if (CheatMenu.SpeedMultiplier > 5f)
+				int num2;
+				if (int.TryParse(this.inventorySizeTextBox.Text, out num2))
 				{
-					CheatMenu.SpeedMultiplier = 5f;
+					if (num2 >= 12 && num2 <= 36)
+					{
+						Game1.player.MaxItems = num2;
+						while (Game1.player.Items.Count < num2)
+						{
+							Game1.player.Items.Add(null);
+						}
+						if (Game1.player.Items.Count > num2)
+						{
+							for (int i = Game1.player.Items.Count - 1; i >= num2; i--)
+							{
+								Game1.player.Items.RemoveAt(i);
+							}
+						}
+						Game1.playSound("coin");
+						Game1.addHUDMessage(new HUDMessage(string.Format("Inventory size: {0}", num2), 2));
+						return;
+					}
+					Game1.addHUDMessage(new HUDMessage("Enter 12-36", 3));
+					return;
 				}
-				CheatMenu.ApplySpeed();
-				Game1.addHUDMessage(new HUDMessage(string.Format("Speed: x{0:F1}", CheatMenu.SpeedMultiplier), 2));
-			}
-			if (this.speedDownButton.containsPoint(x, y))
-			{
-				CheatMenu.SpeedMultiplier -= 0.5f;
-				if (CheatMenu.SpeedMultiplier < 0.2f)
+				else
 				{
-					CheatMenu.SpeedMultiplier = 0.2f;
+					Game1.addHUDMessage(new HUDMessage("Error: enter a number", 3));
 				}
-				CheatMenu.ApplySpeed();
-				Game1.addHUDMessage(new HUDMessage(string.Format("Speed: x{0:F1}", CheatMenu.SpeedMultiplier), 2));
 			}
-			if (this.speedResetButton.containsPoint(x, y))
+			if (this.autoWaterButton.containsPoint(x, y))
 			{
-				CheatMenu.SpeedMultiplier = 1f;
-				CheatMenu.ApplySpeed();
-				Game1.addHUDMessage(new HUDMessage("Speed: normal", 2));
+				this.WaterAllCrops();
+			}
+			if (this.growAllButton.containsPoint(x, y))
+			{
+				this.GrowAllCrops();
 			}
 		}
 
-		// Token: 0x06002988 RID: 10632
+		// Token: 0x06002690 RID: 9872 RVA: 0x00242E88 File Offset: 0x00241088
 		public override void receiveKeyPress(Keys key)
 		{
 			base.receiveKeyPress(key);
@@ -209,186 +239,146 @@ namespace StardewValley.Menus
 			this.moneyTextBox.RecieveSpecialInput(key);
 		}
 
-		// Token: 0x06002989 RID: 10633
+		// Token: 0x06002691 RID: 9873 RVA: 0x00018D15 File Offset: 0x00016F15
 		public override void update(GameTime time)
 		{
 			base.update(time);
 			this.moneyTextBox.Update();
-			CheatMenu.UpdateSpeedContinuously();
+			this.inventorySizeTextBox.Update();
 		}
 
-		// Token: 0x06002F6C RID: 12140
+		// Token: 0x06002692 RID: 9874 RVA: 0x00003371 File Offset: 0x00001571
 		static CheatMenu()
 		{
-			CheatMenu.SpeedMultiplier = 1f;
-			CheatMenu.TimeFrozen = false;
-			CheatMenu.FrozenTimeOfDay = 600;
 		}
 
-		// Token: 0x06003128 RID: 12584
-		private static void InitializeOriginalSpeed()
+		// Token: 0x06002693 RID: 9875 RVA: 0x00242F20 File Offset: 0x00241120
+		private void WaterAllCrops()
 		{
-			if (CheatMenu.OriginalBaseSpeed < 0f && Game1.player != null)
+			if (Game1.currentLocation == null)
 			{
-				CheatMenu.OriginalBaseSpeed = (float)Game1.player.speed;
-				CheatMenu.OriginalAddedSpeed = (float)Game1.player.addedSpeed;
+				Game1.addHUDMessage(new HUDMessage("No location found", 3));
+				return;
 			}
-		}
-
-		// Token: 0x06003129 RID: 12585
-		private static void ApplySpeed()
-		{
+			int num = 0;
+			int num2 = 0;
 			try
 			{
-				if (CheatMenu.OriginalBaseSpeed < 0f)
+				foreach (KeyValuePair<Vector2, TerrainFeature> keyValuePair in Game1.currentLocation.terrainFeatures.Pairs)
 				{
-					CheatMenu.InitializeOriginalSpeed();
+					HoeDirt hoeDirt;
+					if ((hoeDirt = (keyValuePair.Value as HoeDirt)) != null)
+					{
+						num2++;
+						if (hoeDirt.needsWatering())
+						{
+							hoeDirt.state.Value = 1;
+							num++;
+						}
+					}
 				}
-				int newSpeed = (int)(CheatMenu.OriginalBaseSpeed * CheatMenu.SpeedMultiplier);
-				int newAddedSpeed = (int)(CheatMenu.OriginalAddedSpeed * CheatMenu.SpeedMultiplier);
-				if (newSpeed < 0)
+				if (num > 0)
 				{
-					newSpeed = 0;
+					Game1.playSound("slosh");
+					Game1.addHUDMessage(new HUDMessage(string.Format("Watered {0} crops", num), 2));
 				}
-				if (newAddedSpeed < 0)
+				else if (num2 > 0)
 				{
-					newAddedSpeed = 0;
+					Game1.addHUDMessage(new HUDMessage(string.Format("All {0} crops already watered", num2), 1));
 				}
-				if (newSpeed > 20)
+				else
 				{
-					newSpeed = 20;
-				}
-				if (newAddedSpeed > 20)
-				{
-					newAddedSpeed = 20;
-				}
-				if (Game1.player != null)
-				{
-					Game1.player.speed = newSpeed;
-					Game1.player.addedSpeed = newAddedSpeed;
+					Game1.addHUDMessage(new HUDMessage("No crops found on this map", 1));
 				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				Game1.addHUDMessage(new HUDMessage("Error: " + ex.Message, 3));
 			}
 		}
 
-		// Token: 0x0600312A RID: 12586
-		public static void UpdateSpeedContinuously()
+		// Token: 0x06002694 RID: 9876 RVA: 0x00243050 File Offset: 0x00241250
+		private void GrowAllCrops()
 		{
+			if (Game1.currentLocation == null)
+			{
+				Game1.addHUDMessage(new HUDMessage("No location found", 3));
+				return;
+			}
+			int num = 0;
+			int num2 = 0;
 			try
 			{
-				if (Game1.player != null)
+				foreach (KeyValuePair<Vector2, TerrainFeature> keyValuePair in Game1.currentLocation.terrainFeatures.Pairs)
 				{
-					if (CheatMenu.SpeedMultiplier != 1f)
+					HoeDirt hoeDirt;
+					if ((hoeDirt = (keyValuePair.Value as HoeDirt)) != null && hoeDirt.crop != null)
 					{
-						if (CheatMenu.OriginalBaseSpeed < 0f)
+						num2++;
+						int num3 = hoeDirt.crop.phaseDays.Count - 1;
+						if (hoeDirt.crop.currentPhase.Value < num3 && !hoeDirt.crop.fullyGrown.Value)
 						{
-							CheatMenu.InitializeOriginalSpeed();
+							hoeDirt.crop.currentPhase.Value = num3;
+							hoeDirt.crop.fullyGrown.Value = true;
+							hoeDirt.crop.dayOfCurrentPhase.Value = 0;
+							num++;
 						}
-						int targetSpeed = (int)(CheatMenu.OriginalBaseSpeed * CheatMenu.SpeedMultiplier);
-						int targetAddedSpeed = (int)(CheatMenu.OriginalAddedSpeed * CheatMenu.SpeedMultiplier);
-						if (targetSpeed < 0)
-						{
-							targetSpeed = 0;
-						}
-						if (targetAddedSpeed < 0)
-						{
-							targetAddedSpeed = 0;
-						}
-						if (targetSpeed > 20)
-						{
-							targetSpeed = 20;
-						}
-						if (targetAddedSpeed > 20)
-						{
-							targetAddedSpeed = 20;
-						}
-						if (Game1.player.speed == targetSpeed && Game1.player.addedSpeed == targetAddedSpeed)
-						{
-							goto IL_174;
-						}
-						Game1.player.speed = targetSpeed;
-						Game1.player.addedSpeed = targetAddedSpeed;
-						try
-						{
-							Type typeFromHandle = typeof(Character);
-							FieldInfo netSpeedField = typeFromHandle.GetField("netSpeed", BindingFlags.Instance | BindingFlags.NonPublic);
-							FieldInfo netAddedSpeedField = typeFromHandle.GetField("netAddedSpeed", BindingFlags.Instance | BindingFlags.NonPublic);
-							if (netSpeedField != null && netAddedSpeedField != null)
-							{
-								object netSpeedObj = netSpeedField.GetValue(Game1.player);
-								object netAddedSpeedObj = netAddedSpeedField.GetValue(Game1.player);
-								PropertyInfo valueProperty = netSpeedObj.GetType().GetProperty("Value");
-								if (valueProperty != null)
-								{
-									valueProperty.SetValue(netSpeedObj, targetSpeed);
-									valueProperty.SetValue(netAddedSpeedObj, targetAddedSpeed);
-								}
-							}
-							goto IL_174;
-						}
-						catch
-						{
-							goto IL_174;
-						}
-					}
-					if (CheatMenu.OriginalBaseSpeed >= 0f && (Game1.player.speed != (int)CheatMenu.OriginalBaseSpeed || Game1.player.addedSpeed != (int)CheatMenu.OriginalAddedSpeed))
-					{
-						Game1.player.speed = (int)CheatMenu.OriginalBaseSpeed;
-						Game1.player.addedSpeed = (int)CheatMenu.OriginalAddedSpeed;
 					}
 				}
-				IL_174:;
+				if (num > 0)
+				{
+					Game1.playSound("coin");
+					Game1.addHUDMessage(new HUDMessage(string.Format("Grew {0} crops to full maturity", num), 2));
+				}
+				else if (num2 > 0)
+				{
+					Game1.addHUDMessage(new HUDMessage(string.Format("All {0} crops already fully grown", num2), 1));
+				}
+				else
+				{
+					Game1.addHUDMessage(new HUDMessage("No crops found on this map", 1));
+				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				Game1.addHUDMessage(new HUDMessage("Error: " + ex.Message, 3));
 			}
 		}
 
-		// Token: 0x040023C8 RID: 9160
+		// Token: 0x04002064 RID: 8292
 		private TextBox moneyTextBox;
 
-		// Token: 0x040023C9 RID: 9161
+		// Token: 0x04002065 RID: 8293
 		private ClickableTextureComponent addMoneyButton;
 
-		// Token: 0x040023CA RID: 9162
+		// Token: 0x04002066 RID: 8294
 		private ClickableTextureComponent energyButton;
 
-		// Token: 0x040023CB RID: 9163
+		// Token: 0x04002067 RID: 8295
 		private ClickableTextureComponent closeButton;
 
-		// Token: 0x040023CC RID: 9164
+		// Token: 0x04002068 RID: 8296
 		private ClickableTextureComponent immortalButton;
 
-		// Token: 0x040023CD RID: 9165
-		private bool isImmortal;
+		// Token: 0x04002069 RID: 8297
+		public static bool IsImmortal;
 
-		// Token: 0x04002A8C RID: 10892
-		private ClickableTextureComponent timeButton;
+		// Token: 0x0400206A RID: 8298
+		private ClickableTextureComponent oneHitKillButton;
 
-		// Token: 0x04002A8F RID: 10895
-		public static bool TimeFrozen;
+		// Token: 0x0400206B RID: 8299
+		public static bool IsOneHitKill;
 
-		// Token: 0x04002A90 RID: 10896
-		public static int FrozenTimeOfDay;
+		// Token: 0x0400206C RID: 8300
+		private TextBox inventorySizeTextBox;
 
-		// Token: 0x04002C48 RID: 11336
-		public static float SpeedMultiplier;
+		// Token: 0x0400206D RID: 8301
+		private ClickableTextureComponent inventorySizeButton;
 
-		// Token: 0x04002C50 RID: 11344
-		private ClickableTextureComponent speedUpButton;
+		// Token: 0x0400206E RID: 8302
+		private ClickableTextureComponent autoWaterButton;
 
-		// Token: 0x04002C51 RID: 11345
-		private ClickableTextureComponent speedDownButton;
-
-		// Token: 0x04002C52 RID: 11346
-		private ClickableTextureComponent speedResetButton;
-
-		// Token: 0x04002C57 RID: 11351
-		private static float OriginalBaseSpeed = -1f;
-
-		// Token: 0x04002C58 RID: 11352
-		private static float OriginalAddedSpeed = -1f;
+		// Token: 0x0400206F RID: 8303
+		private ClickableTextureComponent growAllButton;
 	}
 }

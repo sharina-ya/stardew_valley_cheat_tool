@@ -1,0 +1,97 @@
+WaterAllCrops, GrowAllCrops - новые функции
+
+
+Добавить поля:
+// Token: 0x0400206C RID: 8300
+private TextBox inventorySizeTextBox;
+
+// Token: 0x0400206D RID: 8301
+private ClickableTextureComponent inventorySizeButton;
+
+// Token: 0x0400206E RID: 8302
+private ClickableTextureComponent autoWaterButton;
+
+// Token: 0x0400206F RID: 8303
+private ClickableTextureComponent growAllButton;
+
+
+В конец конструктора:
+this.inventorySizeTextBox = new TextBox(Game1.content.Load<Texture2D>("LooseSprites\\textBox"), null, Game1.smallFont, Game1.textColor)
+{
+    X = num + num3 + 165 + 50,
+    Y = num2 + 80,
+    Width = 200,
+    Height = 60,
+    Text = "36"
+};
+this.inventorySizeButton = new ClickableTextureComponent(new Rectangle(num + num3 + 165 + 50 + 210, num2 + 80, 64, 64), Game1.mouseCursors, new Rectangle(128, 256, 64, 64), 0.8f, false);
+int num4 = num2 + 80 + 100;
+this.autoWaterButton = new ClickableTextureComponent(new Rectangle(num + num3 + 165 + 50, num4, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+int y = num4 + 80;
+this.growAllButton = new ClickableTextureComponent(new Rectangle(num + num3 + 165 + 50, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+		
+
+В конец функции draw:
+Utility.drawTextWithShadow(b, "Inventory size:", Game1.smallFont, new Vector2((float)this.inventorySizeTextBox.X, (float)(this.inventorySizeTextBox.Y - 40)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+this.inventorySizeTextBox.Draw(b, true);
+this.inventorySizeButton.draw(b);
+Utility.drawTextWithShadow(b, "Auto water crops:", Game1.smallFont, new Vector2((float)this.autoWaterButton.bounds.X, (float)(this.autoWaterButton.bounds.Y - 40)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.autoWaterButton.bounds.X, this.autoWaterButton.bounds.Y, this.autoWaterButton.bounds.Width, this.autoWaterButton.bounds.Height, this.autoWaterButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
+Utility.drawTextWithShadow(b, "Water All", Game1.smallFont, new Vector2((float)(this.autoWaterButton.bounds.X + 10), (float)this.autoWaterButton.bounds.Y + 10f), Color.White, 1f, -1f, -1, -1, 1f, 3);
+Utility.drawTextWithShadow(b, "Grow all crops:", Game1.smallFont, new Vector2((float)this.growAllButton.bounds.X, (float)(this.growAllButton.bounds.Y - 40)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.growAllButton.bounds.X, this.growAllButton.bounds.Y, this.growAllButton.bounds.Width, this.growAllButton.bounds.Height, this.growAllButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
+Utility.drawTextWithShadow(b, "Grow All", Game1.smallFont, new Vector2((float)(this.growAllButton.bounds.X + 10), (float)this.growAllButton.bounds.Y + 10f), Color.White, 1f, -1f, -1, -1, 1f, 3);
+this.closeButton.draw(b);
+base.draw(b);
+base.drawMouse(b);
+
+
+В конец performHoverAction:
+this.autoWaterButton.tryHover(x, y, 0.1f);
+this.growAllButton.tryHover(x, y, 0.1f);
+
+
+В конец receiveLeftClick:
+if (this.inventorySizeButton.containsPoint(x, y))
+{
+    int num2;
+    if (int.TryParse(this.inventorySizeTextBox.Text, out num2))
+    {
+        if (num2 >= 12 && num2 <= 36)
+        {
+            Game1.player.MaxItems = num2;
+            while (Game1.player.Items.Count < num2)
+            {
+                Game1.player.Items.Add(null);
+            }
+            if (Game1.player.Items.Count > num2)
+            {
+                for (int i = Game1.player.Items.Count - 1; i >= num2; i--)
+                {
+                    Game1.player.Items.RemoveAt(i);
+                }
+            }
+            Game1.playSound("coin");
+            Game1.addHUDMessage(new HUDMessage(string.Format("Inventory size: {0}", num2), 2));
+            return;
+        }
+        Game1.addHUDMessage(new HUDMessage("Enter 12-36", 3));
+        return;
+    }
+    else
+    {
+        Game1.addHUDMessage(new HUDMessage("Error: enter a number", 3));
+    }
+}
+if (this.autoWaterButton.containsPoint(x, y))
+{
+    this.WaterAllCrops();
+}
+if (this.growAllButton.containsPoint(x, y))
+{
+    this.GrowAllCrops();
+}
+
+
+В конец update:
+this.inventorySizeTextBox.Update();
