@@ -13,6 +13,7 @@ using StardewValley.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Minigames;
+using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.Quests;
 using StardewValley.Util;
@@ -35,6 +36,25 @@ namespace StardewValley
 			if (CheatMenu.IsImmortal && Game1.player != null)
 			{
 				Game1.player.health = Game1.player.maxHealth;
+			}
+			if (CheatMenu.IsOneHitKill && Game1.player != null && Game1.currentLocation != null)
+			{
+				using (NetCollection<NPC>.Enumerator enumerator = Game1.currentLocation.characters.GetEnumerator())
+				{
+					while (enumerator.MoveNext())
+					{
+						Monster monster;
+						if ((monster = (enumerator.Current as Monster)) != null)
+						{
+							float num = Vector2.Distance(monster.position, Game1.player.position);
+							float killRadius = 64f;
+							if (num < killRadius && monster.health > 0)
+							{
+								monster.takeDamage(99999, 0, 0, false, 0.0, Game1.player);
+							}
+						}
+					}
+				}
 			}
 			if (Game1.input.GetGamePadState().IsButtonDown(Buttons.RightStick))
 			{
