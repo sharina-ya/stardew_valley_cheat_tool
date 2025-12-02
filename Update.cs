@@ -22,10 +22,10 @@ using xTile.Display;
 
 namespace StardewValley
 {
-	// Token: 0x02000012 RID: 18
+	// Token: 0x02000016 RID: 22
 	public partial class Game1 : Game
 	{
-		// Token: 0x06000189 RID: 393
+		// Token: 0x06000199 RID: 409
 		protected override void Update(GameTime gameTime)
 		{
 			if (Game1.input.GetKeyboardState().IsKeyDown(Keys.F7) && Game1.activeClickableMenu == null && base.IsActive)
@@ -46,9 +46,9 @@ namespace StardewValley
 						Monster monster;
 						if ((monster = (enumerator.Current as Monster)) != null)
 						{
-							float num = Vector2.Distance(monster.position, Game1.player.position);
-							float killRadius = 64f;
-							if (num < killRadius && monster.health > 0)
+							float num3 = Vector2.Distance(monster.position, Game1.player.position);
+							float num2 = 64f;
+							if (num3 < num2 && monster.health > 0)
 							{
 								monster.takeDamage(99999, 0, 0, false, 0.0, Game1.player);
 							}
@@ -56,6 +56,7 @@ namespace StardewValley
 					}
 				}
 			}
+			CheatMenu.UpdateSpeedContinuously();
 			if (Game1.input.GetGamePadState().IsButtonDown(Buttons.RightStick))
 			{
 				Game1.rightStickHoldTime += gameTime.ElapsedGameTime.Milliseconds;
@@ -74,3 +75,4 @@ namespace StardewValley
 		}
 	}
 }
+
