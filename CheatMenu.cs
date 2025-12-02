@@ -5,10 +5,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace StardewValley.Menus
 {
-	// Token: 0x02000351 RID: 849
 	public class CheatMenu : IClickableMenu
 	{
-		// Token: 0x0600268B RID: 9867 RVA: 0x00241E7C File Offset: 0x0024007C
 		public CheatMenu() : base(Game1.viewport.Width / 2 - (1000 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, 1000 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2, false)
 		{
 			int num = this.xPositionOnScreen + 50;
@@ -27,13 +25,11 @@ namespace StardewValley.Menus
 			this.closeButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width + 10, this.yPositionOnScreen - 80, 40, 40), Game1.mouseCursors, new Rectangle(337, 494, 12, 12), 4f, false);
 		}
 
-		// Token: 0x0600268C RID: 9868 RVA: 0x00018CE2 File Offset: 0x00016EE2
 		private Rectangle GetTextBoxBounds()
 		{
 			return new Rectangle(this.moneyTextBox.X, this.moneyTextBox.Y, this.moneyTextBox.Width, this.moneyTextBox.Height);
 		}
 
-		// Token: 0x0600268D RID: 9869 RVA: 0x0024200C File Offset: 0x0024020C
 		public override void draw(SpriteBatch b)
 		{
 			b.Draw(Game1.staminaRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * 0.5f);
@@ -53,7 +49,6 @@ namespace StardewValley.Menus
 			base.drawMouse(b);
 		}
 
-		// Token: 0x0600268E RID: 9870 RVA: 0x00018D15 File Offset: 0x00016F15
 		public override void performHoverAction(int x, int y)
 		{
 			base.performHoverAction(x, y);
@@ -61,7 +56,6 @@ namespace StardewValley.Menus
 			this.closeButton.tryHover(x, y, 0.1f);
 		}
 
-		// Token: 0x0600268F RID: 9871 RVA: 0x002422B0 File Offset: 0x002404B0
 		public override void receiveLeftClick(int x, int y, bool playSound = true)
 		{
 			base.receiveLeftClick(x, y, playSound);
@@ -94,7 +88,6 @@ namespace StardewValley.Menus
 			}
 		}
 
-		// Token: 0x06002690 RID: 9872 RVA: 0x002423A4 File Offset: 0x002405A4
 		public override void receiveKeyPress(Keys key)
 		{
 			base.receiveKeyPress(key);
@@ -126,29 +119,15 @@ namespace StardewValley.Menus
 			this.moneyTextBox.RecieveSpecialInput(key);
 		}
 
-		// Token: 0x06002691 RID: 9873 RVA: 0x00018D43 File Offset: 0x00016F43
 		public override void update(GameTime time)
 		{
 			base.update(time);
 			this.moneyTextBox.Update();
 		}
 
-		// Token: 0x04002064 RID: 8292
 		private TextBox moneyTextBox;
-
-		// Token: 0x04002065 RID: 8293
 		private ClickableTextureComponent addMoneyButton;
-
-		// Token: 0x04002066 RID: 8294
 		private ClickableTextureComponent energyButton;
-
-		// Token: 0x04002067 RID: 8295
-		private ClickableTextureComponent freezeTimeButton;
-
-		// Token: 0x04002068 RID: 8296
 		private ClickableTextureComponent closeButton;
-
-		// Token: 0x04002069 RID: 8297
-		private bool isTimeFrozen;
 	}
 }
