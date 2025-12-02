@@ -25,7 +25,7 @@ namespace StardewValley.Menus
 			this.addMoneyButton = new ClickableTextureComponent(new Rectangle(num + 210, y, 64, 64), Game1.mouseCursors, new Rectangle(128, 256, 64, 64), 0.8f, false);
 			this.energyButton = new ClickableTextureComponent(new Rectangle(num + num2, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
 			this.closeButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width + 10, this.yPositionOnScreen - 80, 40, 40), Game1.mouseCursors, new Rectangle(337, 494, 12, 12), 4f, false);
-			this.immortalButton = new ClickableTextureComponent(new Rectangle(num + num2 * 2, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+			this.immortalButton = new ClickableTextureComponent(new Rectangle(num + num2 + 165 + 50, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
 		}
 
 		// Token: 0x0600268C RID: 9868
@@ -49,9 +49,9 @@ namespace StardewValley.Menus
 			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.energyButton.bounds.X, this.energyButton.bounds.Y, this.energyButton.bounds.Width, this.energyButton.bounds.Height, this.energyButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
 			Vector2 vector2 = Game1.dialogueFont.MeasureString("Refill");
 			Utility.drawTextWithShadow(b, "Refill", Game1.smallFont, new Vector2((float)(this.energyButton.bounds.X + this.energyButton.bounds.Width / 2) - vector2.X / 2f, (float)this.energyButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
-			Utility.drawTextWithShadow(b, "Immortality:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 50 + 666), (float)(this.yPositionOnScreen + 90)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			Utility.drawTextWithShadow(b, "Immortality:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 50 + 333 + 165 + 50), (float)(this.yPositionOnScreen + 90)), Color.White, 1f, -1f, -1, -1, 1f, 3);
 			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.immortalButton.bounds.X, this.immortalButton.bounds.Y, this.immortalButton.bounds.Width, this.immortalButton.bounds.Height, this.immortalButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
-			if (this.isImmortal)
+			if (CheatMenu.IsImmortal)
 			{
 				Vector2 vector3 = Game1.dialogueFont.MeasureString("On");
 				Utility.drawTextWithShadow(b, "On", Game1.smallFont, new Vector2((float)(this.immortalButton.bounds.X + this.immortalButton.bounds.Width / 2) - vector3.X / 2f, (float)this.immortalButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
@@ -107,14 +107,14 @@ namespace StardewValley.Menus
 			}
 			if (this.immortalButton.containsPoint(x, y))
 			{
-				if (this.isImmortal)
+				if (CheatMenu.IsImmortal)
 				{
 					Game1.addHUDMessage(new HUDMessage("Immortality: off", 2));
-					this.isImmortal = false;
+					CheatMenu.IsImmortal = false;
 					return;
 				}
 				Game1.addHUDMessage(new HUDMessage("Immortality: on", 2));
-				this.isImmortal = true;
+				CheatMenu.IsImmortal = true;
 			}
 		}
 
@@ -157,6 +157,11 @@ namespace StardewValley.Menus
 			this.moneyTextBox.Update();
 		}
 
+		// Token: 0x060029A6 RID: 10662
+		static CheatMenu()
+		{
+		}
+
 		// Token: 0x04002064 RID: 8292
 		private TextBox moneyTextBox;
 
@@ -172,7 +177,7 @@ namespace StardewValley.Menus
 		// Token: 0x0400221A RID: 8730
 		private ClickableTextureComponent immortalButton;
 
-		// Token: 0x0400221B RID: 8731
-		private bool isImmortal;
+		// Token: 0x040023E7 RID: 9191
+		public static bool IsImmortal;
 	}
 }
