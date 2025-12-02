@@ -26,6 +26,7 @@ namespace StardewValley.Menus
 			this.energyButton = new ClickableTextureComponent(new Rectangle(num + num2, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
 			this.closeButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width + 10, this.yPositionOnScreen - 80, 40, 40), Game1.mouseCursors, new Rectangle(337, 494, 12, 12), 4f, false);
 			this.immortalButton = new ClickableTextureComponent(new Rectangle(num + num2 + 165 + 50, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
+			this.oneHitKillButton = new ClickableTextureComponent(new Rectangle(num + num2 * 2 + 80, y, 150, 40), Game1.mouseCursors, new Rectangle(0, 256, 64, 64), 0.8f, false);
 		}
 
 		// Token: 0x0600268C RID: 9868
@@ -60,6 +61,18 @@ namespace StardewValley.Menus
 			{
 				Vector2 vector4 = Game1.dialogueFont.MeasureString("Off");
 				Utility.drawTextWithShadow(b, "Off", Game1.smallFont, new Vector2((float)(this.immortalButton.bounds.X + this.immortalButton.bounds.Width / 2) - vector4.X / 2f, (float)this.immortalButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			}
+			Utility.drawTextWithShadow(b, "One Hit Kill:", Game1.smallFont, new Vector2((float)(this.xPositionOnScreen + 50 + 666 + 80), (float)(this.yPositionOnScreen + 90)), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(432, 439, 9, 9), this.oneHitKillButton.bounds.X, this.oneHitKillButton.bounds.Y, this.oneHitKillButton.bounds.Width, this.oneHitKillButton.bounds.Height, this.oneHitKillButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()) ? Color.Wheat : Color.White, 4f, false);
+			if (CheatMenu.IsOneHitKill)
+			{
+				Vector2 vector5 = Game1.dialogueFont.MeasureString("On");
+				Utility.drawTextWithShadow(b, "On", Game1.smallFont, new Vector2((float)(this.oneHitKillButton.bounds.X + this.oneHitKillButton.bounds.Width / 2) - vector5.X / 2f, (float)this.oneHitKillButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
+			}
+			else
+			{
+				Vector2 vector6 = Game1.dialogueFont.MeasureString("Off");
+				Utility.drawTextWithShadow(b, "Off", Game1.smallFont, new Vector2((float)(this.oneHitKillButton.bounds.X + this.oneHitKillButton.bounds.Width / 2) - vector6.X / 2f, (float)this.oneHitKillButton.bounds.Y), Color.White, 1f, -1f, -1, -1, 1f, 3);
 			}
 			this.closeButton.draw(b);
 			base.draw(b);
@@ -115,6 +128,17 @@ namespace StardewValley.Menus
 				}
 				Game1.addHUDMessage(new HUDMessage("Immortality: on", 2));
 				CheatMenu.IsImmortal = true;
+			}
+			if (this.oneHitKillButton.containsPoint(x, y))
+			{
+				if (CheatMenu.IsOneHitKill)
+				{
+					Game1.addHUDMessage(new HUDMessage("One Hit Kill: off", 2));
+					CheatMenu.IsOneHitKill = false;
+					return;
+				}
+				Game1.addHUDMessage(new HUDMessage("One Hit Kill: on", 2));
+				CheatMenu.IsOneHitKill = true;
 			}
 		}
 
@@ -179,5 +203,11 @@ namespace StardewValley.Menus
 
 		// Token: 0x040023E7 RID: 9191
 		public static bool IsImmortal;
+
+		// Token: 0x040025B3 RID: 9651
+		private ClickableTextureComponent oneHitKillButton;
+
+		// Token: 0x040025B5 RID: 9653
+		public static bool IsOneHitKill;
 	}
 }
